@@ -1,0 +1,15 @@
+# App contract v2: the template app runs as pods (see the Pod section of the README).
+apiVersion: appstore/v2
+name: template-app
+runtime: kubernetes
+scope: team
+workload:
+  containers:
+    - name: web
+      image: ghcr.io/dhbw-appstore-t3/apps/template-app@sha256:493383e2be3ee22fd553cd09bdc184374e4604ed725800341f0ea031184cd1ed
+      expose: { port: 8080, path: / }
+      resources: { cpu: 200m, memory: 128Mi, requests: { cpu: 10m, memory: 32Mi } }
+      writablePaths: [/tmp]
+egress: none
+access:
+  - { type: url, template: "https://{workload}-{deployment}.{domain}" }

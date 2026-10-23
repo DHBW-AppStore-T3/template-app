@@ -861,3 +861,26 @@ Bei der Registrierung und bei jedem neuen Release **muss** eine umfassende Besch
 - **VM-Deployment:** Wie viele VMs werden deployed? (z.B. eine VM pro Team, eine VM pro User, eine gemeinsame VM)
 - **Konfigurierbare Variablen:** Welche Variablen kann der Deployer konfigurieren und wie werden diese befüllt? (z.B. Flavor-Auswahl, Netzwerk, Datei-Upload)
 - **Änderungen im Release:** Was wurde in dieser Version geändert oder hinzugefügt?
+
+---
+
+## Pod-Variante: Apps ohne Terraform und Packer (App-Vertrag v2)
+
+Ab Version `v2.0.0` zeigt dieses Template, wie eine App als **Pods** statt als VM läuft. Statt `terraform/` und
+`packer/` liegt im Repo eine `appstore.yaml`; die Plattform erzeugt daraus selbst alle Kubernetes-Objekte
+(eigener Namespace, Speicher, HTTPS-Link, Netzwerkregeln). Es läuft kein Code aus dem App-Repo im Worker, und es
+ist kein OpenStack-Credential nötig.
+
+1. **Image bauen:** `image/` enthält ein Dockerfile; `.github/workflows/image.yml` baut es nach
+   `ghcr.io/dhbw-appstore-t3/apps/<app>`. Das Image läuft als Nicht-Root mit schreibgeschütztem Dateisystem
+   (`writablePaths` in der Spec für Verzeichnisse wie `/tmp`) und muss auch auf IPv6 (`[::]`) lauschen.
+2. **Digest eintragen:** Nach dem Build den Digest (`sha256:…`, steht in der Zusammenfassung des Workflow-Laufs)
+   in `appstore.yaml` eintragen. Tags sind nicht erlaubt, nur Digests, und nur aus der erlaubten Registry.
+3. **Taggen und einreichen:** neue Version taggen (z. B. `v2.0.0`) und im AppStore einreichen. Die Freigabe gilt für
+   Commit, `appstore.yaml` und die Image-Digests.
+
+Felder (Details: README von `appstore-api`, Abschnitt „Apps that run as pods“): `scope` (`team` oder `user`: ein Workload je
+Team oder je Person), `workload.containers` (höchstens 3, genau einer mit `expose`), `resources` (Limits und optional
+`requests`), `env` (`generated-password`, `team-name`, `user-name` oder `value`), `storage`, `egress` (`none` oder
+`internet`), `variables` (`file`, `enum`, `string`) und `access`. Unbekannte Felder werden abgelehnt. Die Versionen `v1.x`
+mit Terraform laufen unverändert weiter.
