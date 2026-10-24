@@ -1,0 +1,23 @@
+# Pod runtime: builds the image appstore.yaml refers to, by digest, with the central pipeline of
+# DHBW-AppStore-T3/app-registry (validate appstore.yaml, hadolint, build, smoke test, Trivy, push).
+# After a build on main or dev, copy the digest from the job summary into appstore.yaml and tag a new version:
+# the AppStore only deploys images pinned by digest.
+name: ci
+on:
+  push:
+    branches: [main, dev]
+    paths: ["image/**", ".github/workflows/ci.yml", ".github/smoke-test.sh", ".trivyignore"]
+  pull_request:
+    branches: [main, dev]
+    paths: ["image/**", "appstore.yaml", ".github/workflows/ci.yml", ".github/smoke-test.sh", ".trivyignore"]
+  workflow_dispatch:
+permissions: { contents: read, packages: write }
+jobs:
+  app:
+    # TRIAL: points at the app-registry branch that adds the smoke-test hook. Before merging, change both refs
+    # to main (or a release tag once app-registry has one).
+    uses: DHBW-AppStore-T3/app-registry/.github/workflows/app-ci.yml@feat/central-pipeline-hooks
+    with:
+      images: '[{"suffix":"","context":"image","dockerfile":"image/Dockerfile","smoke_test":".github/smoke-test.sh"}]'
+      strict-image-pin: true
+      registry-ref: feat/central-pipeline-hooks

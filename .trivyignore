@@ -1,0 +1,3 @@
+# brotli-libs 1.2.0-r1 in docker.io/nginxinc/nginx-unprivileged:1.30-alpine; Alpine ships 1.2.1-r0, the base image
+# is not rebuilt yet. Remove this line once it is (the exception expires on its own).
+CVE-2026-111497 exp:2026-11-15
