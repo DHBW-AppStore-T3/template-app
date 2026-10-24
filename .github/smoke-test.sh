@@ -16,4 +16,6 @@ done
 docker logs smoke
 [ "$ok" = 1 ]
 
-curl -fsS "http://[::1]:8080/" | grep -qi "<html"
+# Capture the body first: with pipefail, `curl | grep -q` can fail with SIGPIPE once grep has matched.
+body=$(curl -fsS "http://[::1]:8080/")
+grep -q "Template-App" <<<"$body"
