@@ -6,7 +6,7 @@ scope: team
 workload:
   containers:
     - name: web
-      image: ghcr.io/dhbw-appstore-t3/apps/template-app@sha256:493383e2be3ee22fd553cd09bdc184374e4604ed725800341f0ea031184cd1ed
+      image: ghcr.io/dhbw-appstore-t3/apps/template-app@sha256:38ca9d71f3352e0dcaef3ca125c1ff2f25c2069f9ed2dce6ef045a6e07e01b24
       expose: { port: 8080, path: / }
       resources: { cpu: 200m, memory: 128Mi, requests: { cpu: 10m, memory: 32Mi } }
       writablePaths: [/tmp]
