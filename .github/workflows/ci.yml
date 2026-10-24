@@ -2,6 +2,8 @@
 # DHBW-AppStore-T3/app-registry (validate appstore.yaml, hadolint, build, smoke test, Trivy, push).
 # After a build on main or dev, copy the digest from the job summary into appstore.yaml and tag a new version:
 # the AppStore only deploys images pinned by digest.
+# Pushes happen only when image/ changes. The weekly run builds and scans without pushing, so new vulnerabilities
+# in the base image show up although the code did not change.
 name: ci
 on:
   push:
@@ -10,14 +12,16 @@ on:
   pull_request:
     branches: [main, dev]
     paths: ["image/**", "appstore.yaml", ".github/workflows/ci.yml", ".github/smoke-test.sh", ".trivyignore"]
+  schedule:
+    - cron: "0 5 * * 1"
   workflow_dispatch:
 permissions: { contents: read, packages: write }
 jobs:
   app:
-    # TRIAL: points at the app-registry branch that adds the smoke-test hook. Before merging, change both refs
-    # to main (or a release tag once app-registry has one).
-    uses: DHBW-AppStore-T3/app-registry/.github/workflows/app-ci.yml@feat/central-pipeline-hooks
+    # @v1 is a release tag of app-registry; registry-ref must be the same tag (the pipeline fetches its validator from there).
+    uses: DHBW-AppStore-T3/app-registry/.github/workflows/app-ci.yml@v1
     with:
+      registry-ref: v1
+      push: ${{ github.event_name != 'schedule' }}
       images: '[{"suffix":"","context":"image","dockerfile":"image/Dockerfile","smoke_test":".github/smoke-test.sh"}]'
       strict-image-pin: true
-      registry-ref: feat/central-pipeline-hooks
