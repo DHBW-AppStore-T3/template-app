@@ -871,7 +871,7 @@ Ab Version `v2.0.0` zeigt dieses Template, wie eine App als **Pods** statt als V
 (eigener Namespace, Speicher, HTTPS-Link, Netzwerkregeln). Es läuft kein Code aus dem App-Repo im Worker, und es
 ist kein OpenStack-Credential nötig.
 
-1. **Image bauen:** `image/` enthält ein Dockerfile; `.github/workflows/image.yml` baut es nach
+1. **Image bauen:** `image/` enthält ein Dockerfile; `.github/workflows/ci.yml` baut es (zentrale Pipeline aus `app-registry`: Vertrag, hadolint, Smoke-Test, Trivy) nach
    `ghcr.io/dhbw-appstore-t3/apps/<app>`. Das Image läuft als Nicht-Root mit schreibgeschütztem Dateisystem
    (`writablePaths` in der Spec für Verzeichnisse wie `/tmp`) und muss auch auf IPv6 (`[::]`) lauschen.
 2. **Digest eintragen:** Nach dem Build den Digest (`sha256:…`, steht in der Zusammenfassung des Workflow-Laufs)
