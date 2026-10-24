@@ -1,4 +1,4 @@
-# App contract v2: the template app runs as pods (see the Pod section of the README).
+# App contract v2: the template app runs as pods (see the README).
 apiVersion: appstore/v2
 name: template-app
 runtime: kubernetes
