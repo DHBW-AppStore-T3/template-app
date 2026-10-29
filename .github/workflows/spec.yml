@@ -14,4 +14,4 @@ jobs:
   spec:
     uses: DHBW-AppStore-T3/app-registry/.github/workflows/validate-spec.yml@fix/network-model-2026-10-29
     with:
-      registry-ref: v1
+      registry-ref: fix/network-model-2026-10-29
