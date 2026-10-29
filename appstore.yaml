@@ -10,6 +10,10 @@ workload:
       expose: { port: 8080, path: / }
       resources: { cpu: 200m, memory: 128Mi, requests: { cpu: 10m, memory: 32Mi } }
       writablePaths: [/tmp]
-egress: none
+# What the pod may reach (the contract: app-registry README, "network"): a static page needs nothing, and an app copied
+# from this template starts closed. Both settings are shown as examples of an app that offers a choice.
+network:
+  internet: { allowed: false, default: false }
+  podNetwork: { allowed: true, default: false }
 access:
   - { type: url, template: "https://{workload}-{deployment}.{domain}" }

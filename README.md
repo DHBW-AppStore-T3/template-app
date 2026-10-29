@@ -41,7 +41,7 @@ Details: README von `appstore-api`, Abschnitt „Apps that run as pods“, und d
 - `resources`: Limits und optional `requests`
 - `env`: `generated-password`, `team-name`, `user-name` oder `value`
 - `storage`: persistenter Speicher mit Größe und Einhängepfad
-- `egress`: `none` oder `internet`
+- `network`: `internet` und `podNetwork`, je `allowed` (Wahl im Wizard) und `default` (Startwert) 
 - `variables`: `file`, `enum` oder `string`
 - `access`: Link und Zugangsdaten, die unter „Meine Zugänge“ erscheinen
 
