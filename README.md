@@ -37,6 +37,7 @@ Die Plattform deployt ausschließlich **versionierte Git-Tags**, keinen Branch.
 Details: README von `appstore-api`, Abschnitt „Apps that run as pods“, und der Validator in `app-registry`.
 
 - `scope`: `team` oder `user` (ein Workload je Team oder je Person)
+- `scopeChoice`: `true` lässt die Person beim Deployen zwischen beidem wählen (Standard `false`); `scope` ist dann der Startwert
 - `workload.containers`: höchstens 3, genau einer mit `expose` (Port und Pfad; der Pfad ist die Ingress-Route, normalerweise `/`)
 - `resources`: Limits und optional `requests`
 - `env`: `generated-password`, `team-name`, `user-name` oder `value`

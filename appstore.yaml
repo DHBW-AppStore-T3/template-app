@@ -3,6 +3,7 @@ apiVersion: appstore/v2
 name: template-app
 runtime: kubernetes
 scope: team
+scopeChoice: true
 workload:
   containers:
     - name: web
