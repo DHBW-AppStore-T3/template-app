@@ -12,6 +12,6 @@ on:
 permissions: { contents: read }
 jobs:
   spec:
-    uses: DHBW-AppStore-T3/app-registry/.github/workflows/validate-spec.yml@v1.3.0
+    uses: DHBW-AppStore-T3/app-registry/.github/workflows/validate-spec.yml@v1.4.0
     with:
-      registry-ref: v1.3.0
+      registry-ref: v1.4.0
